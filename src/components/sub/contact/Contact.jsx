@@ -7,6 +7,7 @@ export default function Contact() {
 	const mapFrame = useRef(null);
 	const mapInstance = useRef(null);
 	const [Index, setIndex] = useState(0);
+	const [Traffic, setTraffic] = useState(false);
 
 	const info = useRef([
 		{
@@ -55,6 +56,13 @@ export default function Contact() {
 		window.addEventListener('resize', setCenter);
 	}, [Index]);
 
+	//교통정보 보기 토글 기능
+	useEffect(() => {
+		Traffic
+			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
+			: mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+	}, [Traffic]);
+
 	useEffect(() => {
 		return () => window.removeEventListener('resize', setCenter);
 	}, []);
@@ -72,6 +80,9 @@ export default function Contact() {
 			</ul>
 
 			<button onClick={setCenter}>위치초기화</button>
+			<button onClick={() => setTraffic(!Traffic)}>
+				{Traffic ? '교통정보 끄기' : '교통정보 보기'}
+			</button>
 		</Layout>
 	);
 }
