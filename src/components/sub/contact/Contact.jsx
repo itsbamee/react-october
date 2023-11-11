@@ -15,8 +15,16 @@ export default function Contact() {
 		center: new kakao.maps.LatLng(36.496412055947246, 127.27404607723297), // 지도의 중심좌표
 		level: 3, // 지도의 확대 레벨
 	};
+
+	//마커 이미지 인스턴스를 생성하기 위한 정보값들
+	const imgSrc = `${process.env.PUBLIC_URL}/img/marker1.png`;
+	const imgSize = new kakao.maps.Size(232, 99);
+	const imgPos = { offset: new kakao.maps.Point(116, 99) };
+	const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize, imgPos);
+
 	const marker = new kakao.maps.Marker({
 		position: mapOption.center,
+		image: markerImage,
 	});
 
 	useEffect(() => {
