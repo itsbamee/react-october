@@ -9,14 +9,18 @@ export default function Contact() {
 	//api적용할 요소도 가상돔이기 때문에 참조객체에 연결
 	const mapFrame = useRef(null);
 	const mapOption = {
-		center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		center: new kakao.maps.LatLng(36.496372, 127.274236), // 지도의 중심좌표
 		level: 3, // 지도의 확대 레벨
 	};
+	const marker = new kakao.maps.Marker({
+		position: mapOption.center,
+	});
 
 	useEffect(() => {
-		//인스턴스 복사는 컴포넌트 마운트시 처리
-		new kakao.maps.Map(mapFrame.current, mapOption);
+		const map = new kakao.maps.Map(mapFrame.current, mapOption);
+		marker.setMap(map);
 	}, []);
+
 	return (
 		<Layout title={'Contact us'}>
 			<article id='map' ref={mapFrame}></article>
