@@ -9,7 +9,10 @@ export default function Contact() {
 	//api적용할 요소도 가상돔이기 때문에 참조객체에 연결
 	const mapFrame = useRef(null);
 	const mapOption = {
-		center: new kakao.maps.LatLng(36.496372, 127.274236), // 지도의 중심좌표
+		//위치값 정밀하게 보정하는 법
+		//기존 구글지도 위치값 복사뒤 카카오예제의 클릭한 위치 마커표시 직접해보기에서
+		//해당 코드 붙여넣기하고 원하는 지점을 찍으며녀 아래와같이 정밀한 수치값을 확인가능
+		center: new kakao.maps.LatLng(36.496412055947246, 127.27404607723297), // 지도의 중심좌표
 		level: 3, // 지도의 확대 레벨
 	};
 	const marker = new kakao.maps.Marker({
