@@ -50,7 +50,7 @@ export default function Contact() {
 	const sendEmail = (e) => {
 		e.preventDefault();
 
-		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+		emailjs.sendForm('service_gvv9bxs', 'template_asgcq1j', form.current, 'Wh1QLfOMqbY_nHpsl').then(
 			(result) => {
 				console.log(result.text);
 			},
@@ -107,10 +107,13 @@ export default function Contact() {
 			<div className='mailBox'>
 				<form ref={form} onSubmit={sendEmail}>
 					<label>Name</label>
-					<input type='text' name='user_name' />
+					{/* from_name : 템플릿에서 전송하는 사람이름 변수명 */}
+					<input type='text' name='from_name' />
 					<label>Email</label>
-					<input type='email' name='user_email' />
+					{/* reply_to : 템플릿에서 답장할 메일주소 변수명 */}
+					<input type='email' name='reply_to' />
 					<label>Message</label>
+					{/* message : 템플릿에서 textarea 부분 문의메세지 변수명 */}
 					<textarea name='message' />
 					<input type='submit' value='Send' />
 				</form>
