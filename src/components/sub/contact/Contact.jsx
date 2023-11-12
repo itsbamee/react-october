@@ -48,10 +48,21 @@ export default function Contact() {
 
 	useEffect(() => {
 		mapFrame.current.innerHTML = '';
+		//지도 인스턴스 생성해서 지도화면 렌더링
 		mapInstance.current = new kakao.maps.Map(mapFrame.current, {
 			center: info.current[Index].latlng,
 		});
+		//지도 인스턴스에 맵타입 인스턴스로 타입컨트롤러 추가
+		mapInstance.current.addControl(
+			new kakao.maps.MapTypeControl(),
+			kakao.maps.ControlPosition.TOPRIGHT
+		);
+		//지도 인스턴스에 줌 인스턴스로 줌 컨트롤러 추가
+		mapInstance.current.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+		//마커 인스턴스에 맵 인스턴스 결합해서 마커 출력
 		marker.setMap(mapInstance.current);
+
+		setTraffic(false);
 
 		window.addEventListener('resize', setCenter);
 	}, [Index]);
