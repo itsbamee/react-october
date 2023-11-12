@@ -3,12 +3,28 @@
 		background: orange;
 	}
 
-	#map,
-	#view {
+	.container {
 		width: 100%;
 		height: 50vh;
 		background: #111;
+		position: relative;
 		margin-bottom: 25px;
+
+		> article {
+			position: absolute;
+			top: 0;
+			left: 0Q;
+			width: 100%;
+			height: 100%;
+			background: #111;
+			opacity: 0;
+			z-index: 1;
+
+			&.on {
+				opacity: 1;
+				z-index: 2;
+			}
+		}
 	}
 
 	.branch {
