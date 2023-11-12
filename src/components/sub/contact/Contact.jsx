@@ -5,6 +5,7 @@ import './Contact.scss';
 export default function Contact() {
 	const { kakao } = window;
 	const mapFrame = useRef(null);
+	const viewFrame = useRef(null);
 	const mapInstance = useRef(null);
 	const [Index, setIndex] = useState(0);
 	const [Traffic, setTraffic] = useState(false);
@@ -17,6 +18,7 @@ export default function Contact() {
 			imgSize: new kakao.maps.Size(232, 99),
 			imgPos: { offset: new kakao.maps.Point(116, 99) },
 		},
+
 		{
 			title: '넥슨 본사',
 			latlng: new kakao.maps.LatLng(37.40211707077346, 127.10344953763003),
@@ -42,25 +44,25 @@ export default function Contact() {
 		),
 	});
 
-	const setCenter = () => {
-		mapInstance.current.setCenter(info.current[Index].latlng);
-	};
+	const setCenter = () => mapInstance.current.setCenter(info.current[Index].latlng);
 
 	useEffect(() => {
 		mapFrame.current.innerHTML = '';
-		//지도 인스턴스 생성해서 지도화면 렌더링
 		mapInstance.current = new kakao.maps.Map(mapFrame.current, {
 			center: info.current[Index].latlng,
 		});
-		//지도 인스턴스에 맵타입 인스턴스로 타입컨트롤러 추가
 		mapInstance.current.addControl(
 			new kakao.maps.MapTypeControl(),
 			kakao.maps.ControlPosition.TOPRIGHT
 		);
-		//지도 인스턴스에 줌 인스턴스로 줌 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
-		//마커 인스턴스에 맵 인스턴스 결합해서 마커 출력
+		mapInstance.current.setZoomable(false);
 		marker.setMap(mapInstance.current);
+
+		//로드뷰 설정
+		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (id) => {
+			new kakao.maps.Roadview(viewFrame.current).setPanoId(id, info.current[Index].latlng);
+		});
 
 		setTraffic(false);
 
@@ -81,6 +83,7 @@ export default function Contact() {
 	return (
 		<Layout title={'Contact us'}>
 			<article id='map' ref={mapFrame}></article>
+			<article id='view' ref={viewFrame}></article>
 
 			<ul className='branch'>
 				{info.current.map((el, idx) => (
@@ -90,7 +93,7 @@ export default function Contact() {
 				))}
 			</ul>
 
-			<button onClick={setCenter}>위치초기화</button>
+			<button onClick={setCenter}>위치 초기화</button>
 			<button onClick={() => setTraffic(!Traffic)}>
 				{Traffic ? '교통정보 끄기' : '교통정보 보기'}
 			</button>
