@@ -61,6 +61,7 @@ export default function Contact() {
 		marker.setMap(mapInstance.current);
 
 		//로드뷰 설정
+		//두번째 수치값 50은 (m단위) 마커 위치로부터 로드뷰가 출력될 수 있는 가장 가까운 거리의 범위지정
 		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (id) => {
 			new kakao.maps.Roadview(viewFrame.current).setPanoId(id, info.current[Index].latlng);
 		});
