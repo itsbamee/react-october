@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import Layout from '../../common/layout/Layout';
+import emailjs from '@emailjs/browser';
 import './Contact.scss';
 
 export default function Contact() {
@@ -7,6 +8,7 @@ export default function Contact() {
 	const mapFrame = useRef(null);
 	const viewFrame = useRef(null);
 	const mapInstance = useRef(null);
+	const form = useRef(null);
 	const [Index, setIndex] = useState(0);
 	const [Traffic, setTraffic] = useState(false);
 	const [View, setView] = useState(false);
@@ -44,6 +46,19 @@ export default function Contact() {
 			info.current[Index].imgPos
 		),
 	});
+
+	const sendEmail = (e) => {
+		e.preventDefault();
+
+		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+			(result) => {
+				console.log(result.text);
+			},
+			(error) => {
+				console.log(error.text);
+			}
+		);
+	};
 
 	const roadView = () => {
 		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (id) => {
@@ -89,26 +104,39 @@ export default function Contact() {
 
 	return (
 		<Layout title={'Contact us'}>
-			<div className='container'>
-				<article id='map' ref={mapFrame} className={View ? '' : 'on'}></article>
-				<article id='view' ref={viewFrame} className={View ? 'on' : ''}></article>
+			<div className='mailBox'>
+				<form ref={form} onSubmit={sendEmail}>
+					<label>Name</label>
+					<input type='text' name='user_name' />
+					<label>Email</label>
+					<input type='email' name='user_email' />
+					<label>Message</label>
+					<textarea name='message' />
+					<input type='submit' value='Send' />
+				</form>
 			</div>
+			<div className='mapBox'>
+				<div className='container'>
+					<article id='map' ref={mapFrame} className={View ? '' : 'on'}></article>
+					<article id='view' ref={viewFrame} className={View ? 'on' : ''}></article>
+				</div>
 
-			<ul className='branch'>
-				{info.current.map((el, idx) => (
-					<li key={idx} className={idx === Index ? 'on' : ''} onClick={() => setIndex(idx)}>
-						{el.title}
-					</li>
-				))}
-			</ul>
+				<ul className='branch'>
+					{info.current.map((el, idx) => (
+						<li key={idx} className={idx === Index ? 'on' : ''} onClick={() => setIndex(idx)}>
+							{el.title}
+						</li>
+					))}
+				</ul>
 
-			<button onClick={setCenter}>위치 초기화</button>
-			{!View && (
-				<button onClick={() => setTraffic(!Traffic)}>
-					{Traffic ? '교통정보 끄기' : '교통정보 보기'}
-				</button>
-			)}
-			<button onClick={() => setView(!View)}>{View ? '지도보기' : '로드뷰 보기'}</button>
+				<button onClick={setCenter}>위치 초기화</button>
+				{!View && (
+					<button onClick={() => setTraffic(!Traffic)}>
+						{Traffic ? '교통정보 끄기' : '교통정보 보기'}
+					</button>
+				)}
+				<button onClick={() => setView(!View)}>{View ? '지도보기' : '로드뷰 보기'}</button>
+			</div>
 		</Layout>
 	);
 }
