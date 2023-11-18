@@ -32,29 +32,53 @@ export default function Members() {
 	};
 
 	const check = (value) => {
+		const txt = /[a-zA-Z]/;
+		const num = /[0-9]/;
+		const spc = /[!@#$%^&*()_+]/;
+
 		const errs = {};
+		//일반텍스트 인증로직
 		if (value.userid.length < 5) {
 			errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
 		}
+		if (
+			value.pwd1.length < 5 ||
+			!txt.test(value.pwd1) ||
+			!num.test(value.pwd1) ||
+			!spc.test(value.pwd1)
+		) {
+			errs.pwd1 = '비밀번호는 특수문자,영문,숫자포함해서 5글자 이상 입력하세요.';
+		}
+		//pwd2 인증로직
+		if (value.pwd1 !== value.pwd2 || !value.pwd2) {
+			errs.pwd2 = '두개의 비밀번호를 동일하게 입력하세요.';
+		}
 		if (value.comments.length < 10) {
+			//textarea 인증로직
 			errs.comments = '남기는 말은 최소 10글자 이상 입력하세요.';
 		}
+		//radio 버튼 인증로직
 		if (!value.gender) {
 			errs.gender = '성별을 선택해주세요.';
 		}
+		//select요소 인증로직
 		if (!value.edu) {
 			errs.edu = '최종학력을 선택해주세요.';
 		}
+		//checkbox 인증로직
 		if (value.interest.length === 0) {
 			errs.interests = '취미를 하나이상 선택하세요.';
 		}
+		//email 인증로직
 		if (!value.email || !/@/.test(value.email)) {
 			errs.email = '이메일 주소에는 무조건 @를 포함해야 합니다.';
 		} else {
-			if (!value.email.split('@')[0] || !value.email.split('@')[1]) {
+			const [forward, backward] = value.email.split('@');
+			if (!forward || !backward) {
 				errs.email = '@ 앞뒤로 문자값이 있어야 합니다.';
 			} else {
-				if (!value.email.split('@')[1].split('.')[0] || !value.email.split('@')[1].split('.')[1]) {
+				const [forward, backward] = value.email.split('.');
+				if (!forward || !backward) {
 					errs.email = '이메일 . 앞뒤로 문자값이 있어야 합니다.';
 				}
 			}
@@ -119,6 +143,7 @@ export default function Members() {
 												value={Val.pwd1}
 												onChange={handleChange}
 											/>
+											{Errs.pwd1 && <p>{Errs.pwd1}</p>}
 										</td>
 										<td>
 											<input
@@ -128,6 +153,7 @@ export default function Members() {
 												value={Val.pwd2}
 												onChange={handleChange}
 											/>
+											{Errs.pwd2 && <p>{Errs.pwd2}</p>}
 										</td>
 									</tr>
 
