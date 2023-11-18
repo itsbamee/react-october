@@ -1,10 +1,10 @@
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
-import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 
 export default function Members() {
-	console.log('re-render');
+	const history = useHistory();
 	const initVal = useRef({
 		userid: '',
 		email: '',
@@ -15,9 +15,9 @@ export default function Members() {
 		interest: [],
 		comments: '',
 	});
+
 	const [Val, setVal] = useState(initVal.current);
 	const [Errs, setErrs] = useState({});
-	const location = useLocation();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -92,6 +92,7 @@ export default function Members() {
 		e.preventDefault();
 		if (Object.keys(check(Val)).length === 0) {
 			alert('회원가입을 축하합니다.');
+			history.push('/');
 		}
 	};
 
