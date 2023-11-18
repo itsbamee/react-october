@@ -2,7 +2,7 @@ import React from './Banner.scss';
 
 function Banner() {
 	return (
-		<section>
+		<section className='banner'>
 			<h1>Banner</h1>
 		</section>
 	);
