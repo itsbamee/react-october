@@ -2,7 +2,7 @@ import React from './Banner.scss';
 
 function Banner() {
 	return (
-		<section className='banner'>
+		<section className='banner myScroll'>
 			<h1>Banner</h1>
 		</section>
 	);
