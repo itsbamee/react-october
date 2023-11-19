@@ -1,6 +1,14 @@
 export function useGetCurrentScroll() {
 	return (refEl) => {
 		const scroll = window.scrollY;
-		return scroll - refEl.current?.offsetTop;
+		const baseLine = window.innerHeight / 2;
+		let customScroll = 0;
+
+		if (scroll >= refEl.current?.offsetTop - baseLine) {
+			customScroll = scroll - refEl.current?.offsetTop + baseLine;
+		} else {
+			customScroll = 0;
+		}
+		return customScroll;
 	};
 }

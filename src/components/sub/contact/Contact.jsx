@@ -104,7 +104,7 @@ export default function Contact() {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
 			: mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-	}, [Traffic]);
+	}, [Traffic, kakao]);
 
 	useEffect(() => {
 		return () => window.removeEventListener('resize', setCenter);

@@ -4,4 +4,14 @@
 	background: lightgrey;
 	position: relative;
 	padding: 10vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+
+	.box {
+		width: 400px;
+		height: 400px;
+		background: #fff;
+	}
 }
