@@ -15,7 +15,11 @@ function Btns() {
 		secs.current.forEach((el, idx) => {
 			if (scroll >= el.offsetTop - window.innerHeight / 2) {
 				Array.from(btns.current.children).forEach((btn) => btn.classList.remove('on'));
-				btns.current.children[idx].classList.add('on');
+				//btns의 li요소가 동적으로 생성되기 전에 호출 시 오류를 피하기 위해 optional chaining처리
+				btns.current.children[idx]?.classList.add('on');
+
+				secs.current.forEach((sec) => sec.classList.remove('on'));
+				secs.current[idx].classList.add('on');
 			}
 		});
 	};
@@ -41,6 +45,12 @@ function Btns() {
 			window.removeEventListener('scroll', activation);
 		};
 	}, []);
+
+	//Num state 변경시 activation 호출
+	useEffect(() => {
+		//마운트시 section의 첫번째 요소에 'on'을 붙여주기 위함
+		activation();
+	}, [Num]);
 
 	return (
 		<ul className='btns' ref={btns}>
