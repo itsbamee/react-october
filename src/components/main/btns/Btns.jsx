@@ -7,31 +7,23 @@ function Btns() {
 	const [Num, setNum] = useState(0);
 	const secs = useRef(null);
 	const btns = useRef(null);
-	const eventBlocker = useRef(null);
 
 	const activation = () => {
-		//먼저 이벤트블로커 참조객체값이 true면(있으면) 리턴으로 끊김(함수종료)
-		if (eventBlocker.current) return;
+		const scroll = window.scrollY;
+		secs.current.forEach((el, idx) => {
+			if (scroll >= el.offsetTop - window.innerHeight / 2) {
+				Array.from(btns.current.children).forEach((btn) => btn.classList.remove('on'));
+				btns.current.children[idx]?.classList.add('on');
 
-		//setTimeout 동안에는 이벤트블로커 실행되지 않음
-		//activation 함수를 setTimeout으로 묶어놓은 다음에 setTimeout이 끝나야지만 eventBlocker값을 비움으로써
-		//강제로 0.5초 동안 함수 호출을 막아줌
-		eventBlocker.current = setTimeout(() => {
-			console.log('activation');
-			const scroll = window.scrollY;
-			secs.current.forEach((el, idx) => {
-				if (scroll >= el.offsetTop - window.innerHeight / 2) {
-					Array.from(btns.current.children).forEach((btn) => btn.classList.remove('on'));
-					btns.current.children[idx]?.classList.add('on');
-
-					secs.current.forEach((sec) => sec.classList.remove('on'));
-					secs.current[idx].classList.add('on');
-				}
-			});
-			//다시 이벤트블로커 실행
-			eventBlocker.current = null;
-		}, 300);
+				secs.current.forEach((sec) => sec.classList.remove('on'));
+				secs.current[idx].classList.add('on');
+			}
+		});
 	};
+
+	//useThrottle 커스텀훅의 인수로 activation 함수를 전달해서
+	//throttle이 적용된 activation2라는 함수를 반환받음
+	const activation2 = useThrottle(activation);
 
 	const handleClick = (idx) => {
 		new Anime(
@@ -45,11 +37,11 @@ function Btns() {
 	useEffect(() => {
 		secs.current = btns.current.parentElement.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
-
-		window.addEventListener('scroll', activation);
+		//scroll이벤트는 throttle이 적용된 activation2 함수를 연결
+		window.addEventListener('scroll', activation2);
 
 		return () => {
-			window.removeEventListener('scroll', activation);
+			window.removeEventListener('scroll', activation2);
 		};
 	}, []);
 
