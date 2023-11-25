@@ -21,8 +21,6 @@ function Btns() {
 		});
 	};
 
-	//useThrottle 커스텀훅의 인수로 activation 함수를 전달해서
-	//throttle이 적용된 activation2라는 함수를 반환받음
 	const activation2 = useThrottle(activation);
 
 	const handleClick = (idx) => {
@@ -37,13 +35,12 @@ function Btns() {
 	useEffect(() => {
 		secs.current = btns.current.parentElement.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
-		//scroll이벤트는 throttle이 적용된 activation2 함수를 연결
 		window.addEventListener('scroll', activation2);
 
 		return () => {
 			window.removeEventListener('scroll', activation2);
 		};
-	}, []);
+	}, [activation2]);
 
 	//Num state 변경시 activation 호출
 	useEffect(activation, [Num]);
@@ -66,18 +63,3 @@ function Btns() {
 }
 
 export default Btns;
-
-//useCallback : 함수자체를 메모이제이션해서 해당 함수를 재활용 (메모리 강제등록해 있는 값을 재활용)
-//useMemo : 함수의 리턴값 자체를 메모이제이션
-//memo : 컴포넌트 자체를 메모이제이션
-
-//고차컴포넌트(hoc) : high order component
-//인수로 컴포넌트를 전달받아서 새로운 컴포넌트를 반환
-
-//hook의 조건 (법칙 일케 안하면 에러남)
-//1. 이름이 use로 시작
-//2. 커스텀훅은 무조건 함수나 리턴값을 반환
-//3. 다른 hook이나 핸들러함수 안쪽에서 호출이 불가, 컴포넌트 함수 안쪽에서만 호출 가능 (function Btns() {요 안에서만 훅가능 const act(){ 요 안에서는 훅 불가능 }})
-
-//throttle : 강제로 이벤트 핸들러 호출횟수를 압박해서 줄이는 기법
-//scroll, mousemove, resize, mousewheel : 단기간에 많은 핸들러를 호출하는 이벤트 (1초 60번, 화면주사율 60hz)
