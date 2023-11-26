@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import Layout from '../../common/layout/Layout';
 import emailjs from '@emailjs/browser';
 import './Contact.scss';
@@ -38,14 +38,18 @@ export default function Contact() {
 		},
 	]);
 
-	const marker = new kakao.maps.Marker({
-		position: info.current[Index].latlng,
-		image: new kakao.maps.MarkerImage(
-			info.current[Index].imgSrc,
-			info.current[Index].imgSize,
-			info.current[Index].imgPos
-		),
-	});
+	//useMemo는 함수 자체가 아닌 함수가 반환하는 return값을 메모이제이션 처리하기 때문에
+	//무조건 첫번째 인수값으로 특정값을 리턴하는 익명함수가 등록되어야 함
+	const marker = useMemo(() => {
+		return new kakao.maps.Marker({
+			position: info.current[Index].latlng,
+			image: new kakao.maps.MarkerImage(
+				info.current[Index].imgSrc,
+				info.current[Index].imgSize,
+				info.current[Index].imgPos
+			),
+		});
+	}, [Index, kakao]);
 
 	const sendEmail = (e) => {
 		e.preventDefault();
@@ -68,16 +72,16 @@ export default function Contact() {
 		);
 	};
 
-	const roadView = () => {
+	const roadView = useCallback(() => {
 		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (id) => {
 			new kakao.maps.Roadview(viewFrame.current).setPanoId(id, info.current[Index].latlng);
 		});
-	};
+	}, [Index, kakao]);
 
-	const setCenter = () => {
+	const setCenter = useCallback(() => {
 		mapInstance.current.setCenter(info.current[Index].latlng);
 		roadView();
-	};
+	}, [Index, roadView]);
 
 	useEffect(() => {
 		mapFrame.current.innerHTML = '';
@@ -97,7 +101,7 @@ export default function Contact() {
 		roadView(false);
 
 		window.addEventListener('resize', setCenter);
-	}, [Index]);
+	}, [Index, kakao, roadView, setCenter, marker]);
 
 	//교통정보 보기 토글 기능
 	useEffect(() => {
@@ -108,7 +112,7 @@ export default function Contact() {
 
 	useEffect(() => {
 		return () => window.removeEventListener('resize', setCenter);
-	}, []);
+	}, [setCenter]);
 
 	return (
 		<Layout title={'Contact us'}>
