@@ -1,15 +1,40 @@
 import './Visual.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { useEffect, useState } from 'react';
+
+// mus -> [명칭, set명칭] -> [] 빈배열 추가
+// 0. fetching될 데이터가 담길 State생성
+// 1. DB폴더의 데이터를 fetching한뒤 state에 담는 함수 추가(async await)
+// 2. useEffect 안쪽에서 해당 함수 호출
+// 3. return문 안쪽에서 state에 담겨있는 배열을 반복돌면서 원하는 형태로 JSX를 리턴
 
 export default function Visual() {
+	const [SlideData, setSlideData] = useState([]);
+
+	const fetchData = async () => {
+		const data = await fetch(process.env.PUBLIC_URL + '/DB/department.json');
+		const json = await data.json();
+		console.log(json.members);
+		setSlideData(json.members);
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
+
 	return (
 		<figure className='myScroll'>
-			<Swiper spaceBetween={50} slidesPerView={3}>
-				<SwiperSlide>Slide 1</SwiperSlide>
-				<SwiperSlide>Slide 2</SwiperSlide>
-				<SwiperSlide>Slide 3</SwiperSlide>
-				<SwiperSlide>Slide 4</SwiperSlide>
+			<Swiper spaceBetween={50} slidesPerView={3} loop={true}>
+				{SlideData.map((data, idx) => {
+					return (
+						<SwiperSlide key={idx}>
+							<div className='pic'>
+								<img src={process.env.PUBLIC_URL + '/img/' + data.pic} alt={data.name} />
+							</div>
+						</SwiperSlide>
+					);
+				})}
 			</Swiper>
 		</figure>
 	);
