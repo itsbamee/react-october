@@ -1,21 +1,21 @@
 import './Department.scss';
 import Layout from '../../common/layout/Layout';
-import React, { useEffect, useState } from 'react';
-
-const path = process.env.PUBLIC_URL;
+import React, { useEffect, useState, useRef } from 'react';
 
 export default function Department() {
+	const path = useRef(process.env.PUBLIC_URL);
+
 	const [Department, setDepartment] = useState([]);
 	const [History, setHistory] = useState([]);
 
 	const fetchDepartment = async () => {
-		const data = await fetch(`${path}/DB/department.json`);
+		const data = await fetch(`${path.current}/DB/department.json`);
 		const json = await data.json();
 		setDepartment(json.members);
 	};
 
 	const fetchHistory = async () => {
-		const data = await fetch(`${path}/DB/history.json`);
+		const data = await fetch(`${path.current}/DB/history.json`);
 		const json = await data.json();
 		setHistory(json.history);
 	};
@@ -53,7 +53,7 @@ export default function Department() {
 						return (
 							<article key={idx}>
 								<div className='pic'>
-									<img src={`${path}/img/${member.pic}`} alt={member.name} />
+									<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
 								</div>
 								<h3>{member.name}</h3>
 								<p>{member.position}</p>
