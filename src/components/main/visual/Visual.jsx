@@ -1,7 +1,7 @@
 import './Visual.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // mus -> [명칭, set명칭] -> [] 빈배열 추가
 // 0. fetching될 데이터가 담길 State생성
@@ -9,11 +9,22 @@ import { useEffect, useState } from 'react';
 // 2. useEffect 안쪽에서 해당 함수 호출
 // 3. return문 안쪽에서 state에 담겨있는 배열을 반복돌면서 원하는 형태로 JSX를 리턴
 
+/*
+	리액트 안에서 특정 정보값을 담아주는 선택지
+	1. useState : 화면에 출력이 되어야하는 중요한 데이터값
+	2. useRef : 단순 모션을 위한 DOM의 스타일 값, 특정함수의 구동을 위한 정보값 (instace같은 것들)
+*/
+
 export default function Visual() {
 	const [SlideData, setSlideData] = useState([]);
+	const path = useRef(process.env.PUBLIC_URL);
+	//path 참조객체(useRef)로 만들기 (게속 기억하는 값)
+	//useRef를 쓰려면 current를 써줘야 함
+	//바뀌지 않는 정적인 값을 담을 때에는 가급적 참조객체에 담아줌
+	//일반변수로 담으면 다시 useMemo로 메모이제이션해야 한다는 번거로움을 피하기 위함
 
 	const fetchData = async () => {
-		const data = await fetch(process.env.PUBLIC_URL + '/DB/department.json');
+		const data = await fetch(`${path.current}/DB/department.json`);
 		const json = await data.json();
 		console.log(json.members);
 		setSlideData(json.members);
@@ -30,7 +41,7 @@ export default function Visual() {
 					return (
 						<SwiperSlide key={idx}>
 							<div className='pic'>
-								<img src={process.env.PUBLIC_URL + '/img/' + data.pic} alt={data.name} />
+								<img src={`${path.current}/img/${data.pic}`} alt={data.name} />
 							</div>
 						</SwiperSlide>
 					);
