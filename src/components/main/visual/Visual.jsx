@@ -1,27 +1,12 @@
 import './Visual.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
 import 'swiper/css';
 import { useEffect, useRef, useState } from 'react';
-
-// mus -> [명칭, set명칭] -> [] 빈배열 추가
-// 0. fetching될 데이터가 담길 State생성
-// 1. DB폴더의 데이터를 fetching한뒤 state에 담는 함수 추가(async await)
-// 2. useEffect 안쪽에서 해당 함수 호출
-// 3. return문 안쪽에서 state에 담겨있는 배열을 반복돌면서 원하는 형태로 JSX를 리턴
-
-/*
-	리액트 안에서 특정 정보값을 담아주는 선택지
-	1. useState : 화면에 출력이 되어야하는 중요한 데이터값
-	2. useRef : 단순 모션을 위한 DOM의 스타일 값, 특정함수의 구동을 위한 정보값 (instace같은 것들)
-*/
 
 export default function Visual() {
 	const [SlideData, setSlideData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL);
-	//path 참조객체(useRef)로 만들기 (게속 기억하는 값)
-	//useRef를 쓰려면 current를 써줘야 함
-	//바뀌지 않는 정적인 값을 담을 때에는 가급적 참조객체에 담아줌
-	//일반변수로 담으면 다시 useMemo로 메모이제이션해야 한다는 번거로움을 피하기 위함
 
 	const fetchData = async () => {
 		const data = await fetch(`${path.current}/DB/department.json`);
@@ -31,14 +16,19 @@ export default function Visual() {
 	};
 
 	useEffect(() => {
-		//외부데이터 fetching (web api의 기능 필요)
-		//가상돔에 이벤트 연결 혹은 추가 속성 (web api의 기능 필요)
 		fetchData();
 	}, []);
 
 	return (
 		<figure className='myScroll'>
-			<Swiper spaceBetween={50} slidesPerView={3} loop={true} centeredSlides={true}>
+			<Swiper
+				modules={[Autoplay]}
+				spaceBetween={50}
+				slidesPerView={3}
+				loop={true}
+				centeredSlides={true}
+				autoplay={{ delay: 1500, disableOnInteraction: false }}
+			>
 				{SlideData.map((data, idx) => {
 					return (
 						<SwiperSlide key={idx}>
