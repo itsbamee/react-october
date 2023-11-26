@@ -5,4 +5,16 @@ figure {
 	position: relative;
 	z-index: 1;
 	overflow: hidden;
+	padding: 10vh 0px;
+
+	.swiper {
+		height: 100%;
+		.swiper-wrapper {
+			height: inherit;
+			.swiper-slide {
+				height: inherit;
+				background: #fff;
+			}
+		}
+	}
 }
