@@ -27,12 +27,15 @@ export default function Visual() {
 				slidesPerView={3}
 				loop={true}
 				centeredSlides={true}
-				autoplay={{ delay: 1500, disableOnInteraction: false }}
+				autoplay={{ delay: 1500, disableOnInteraction: true }}
 			>
 				{SlideData.map((data, idx) => {
+					//여러 데이터중에 몇개만 보여지게 지정함 (지금은 5개로 지정)
+					if (idx >= 5) return null;
 					return (
 						<SwiperSlide key={idx}>
 							<div className='pic'>
+								<img src={`${path.current}/img/${data.pic}`} alt={data.name} />
 								<img src={`${path.current}/img/${data.pic}`} alt={data.name} />
 							</div>
 						</SwiperSlide>
