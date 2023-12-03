@@ -5,6 +5,8 @@ import 'swiper/css';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Visual() {
+	const [Index, setIndex] = useState(0);
+
 	const [SlideData, setSlideData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL);
 
@@ -25,7 +27,11 @@ export default function Visual() {
 				<ul>
 					{SlideData.map((tit, idx) => {
 						if (idx >= 5) return null;
-						return <li key={idx}>{tit.name}</li>;
+						return (
+							<li key={idx} className={idx === Index ? 'on' : ''}>
+								{tit.name}
+							</li>
+						);
 					})}
 				</ul>
 			</div>
@@ -36,9 +42,7 @@ export default function Visual() {
 				loop={true}
 				centeredSlides={true}
 				autoplay={{ delay: 1500, disableOnInteraction: true }}
-				onSlideChange={(el) => {
-					console.log(el);
-				}}
+				onSlideChange={(el) => setIndex(el.realIndex)}
 			>
 				{SlideData.map((data, idx) => {
 					if (idx >= 5) return null;
