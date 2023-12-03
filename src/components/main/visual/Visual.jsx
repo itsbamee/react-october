@@ -21,6 +21,14 @@ export default function Visual() {
 
 	return (
 		<figure className='myScroll'>
+			<div className='txtBox'>
+				<ul>
+					{SlideData.map((tit, idx) => {
+						if (idx >= 5) return null;
+						return <li key={idx}>{tit.name}</li>;
+					})}
+				</ul>
+			</div>
 			<Swiper
 				modules={[Autoplay]}
 				spaceBetween={50}
@@ -28,9 +36,11 @@ export default function Visual() {
 				loop={true}
 				centeredSlides={true}
 				autoplay={{ delay: 1500, disableOnInteraction: true }}
+				onSlideChange={(el) => {
+					console.log(el);
+				}}
 			>
 				{SlideData.map((data, idx) => {
-					//여러 데이터중에 몇개만 보여지게 지정함 (지금은 5개로 지정)
 					if (idx >= 5) return null;
 					return (
 						<SwiperSlide key={idx}>
