@@ -8,13 +8,14 @@ import Members from './components/sub/members/Members';
 import Detail from './components/sub/youtube/Detail';
 import Youtube from './components/sub/youtube/Youtube';
 import { useMedia } from './hooks/useMedia';
+import './styles/Variable.scss';
 import './styles/Global.scss';
 import { Route, Switch } from 'react-router-dom';
 import MainWrap from './components/main/mainWrap/MainWrap';
 
 function App() {
 	return (
-		<main className={useMedia()}>
+		<main className={`wrap ${useMedia()}`}>
 			{/* Switch : 중첩된 라우터로 복수개의 동일한 컴포넌트가 연결될 때 처음 연결되는 라우터만 실행되고 나머지는 무시 */}
 			<Switch>
 				<Route exact path='/'>

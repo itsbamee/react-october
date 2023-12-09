@@ -1,2 +1,24 @@
 $tablet: 999px;
 $mobile: 539px;
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
+
+:root {
+	--baseFont: 'Nanum Myeongjo', 'arial', '돋움';
+	--baseColor: #111;
+	--basecolor-code: 18, 18, 18;
+	--bgColor: #efefef;
+	--bgColor-code: 240, 240, 240;
+	--pointColor: lightcoral;
+	--boxGap: 20px;
+	--countColumn: 3;
+	--countColumn-2: 2;
+	--countColumn-1: 1;
+	--bodySize: 1rem;
+}
+
+.dark {
+	--baseColor: #fff;
+	--bgColor: #222;
+	--bgColor-code: 34, 34, 34;
+}
