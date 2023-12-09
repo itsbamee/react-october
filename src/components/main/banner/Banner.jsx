@@ -19,8 +19,9 @@ export default function Banner() {
 	}, [getScroll]);
 
 	useEffect(() => {
-		scrollFrame?.addEventListener('scroll', handleScroll);
-	}, [handleScroll, scrollFrame]);
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, [handleScroll]);
 
 	return (
 		<section className='banner myScroll' ref={currentEl}>

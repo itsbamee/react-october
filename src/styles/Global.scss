@@ -2,9 +2,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	color: #111;
 	font-weight: normal;
-	font-family: 'Nanum Myeongjo';
 }
 ul,
 ol,
@@ -28,15 +26,9 @@ a {
 	overflow-y: auto;
 	color: var(--baseColor);
 	font-family: var(--baseFont);
-	background: var(--bgColor);
+	background-color: var(--bgColor);
 	font-size: var(--bodySize);
-	&::-webkit-scrollbar {
-		width: 6px;
-	}
-	&::-webkit-scrollbar-thumb {
-		border-radius: 3px;
-		background: var(--pointColor);
-	}
+
 	table,
 	th,
 	td {
@@ -63,6 +55,13 @@ a {
 	select {
 		font-size: 1rem;
 		color: rgba(var(--baseColor-code), 0.5);
-		background-color: transparent;
+	}
+
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 3px;
+		background: var(--pointColor);
 	}
 }
