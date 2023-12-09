@@ -5,6 +5,7 @@ export default class Anime {
 
 	//인스턴스 생성시 옵션값 전달 및 속성값 보정함수 반복 호출
 	constructor(selector, props, opt) {
+		console.log(selector);
 		this.selector = selector;
 		this.defOpt = { ...this.#defOpt, ...opt };
 		this.keys = Object.keys(props);
@@ -32,7 +33,7 @@ export default class Anime {
 		}
 
 		key === 'scroll'
-			? (currentValue = this.selector.scrollY)
+			? (currentValue = this.selector.scrollTop)
 			: (currentValue = parseFloat(getComputedStyle(this.selector)[key]));
 
 		if (type === 'percent') {
@@ -79,7 +80,7 @@ export default class Anime {
 	//전달받은 currentValue, targetValue를 비교해서 진행률과 진행률이 적용된 수치값 리턴
 	getProgress(time, currentValue, value) {
 		let easingProgress = null;
-		currentValue.length ? (this.isBg = true) : (this.isBg = false);
+		currentValue?.length ? (this.isBg = true) : (this.isBg = false);
 		let timelast = time - this.startTime;
 		let progress = timelast / this.duration;
 		progress < 0 && (progress = 0);
@@ -109,7 +110,7 @@ export default class Anime {
 		else if (type === 'color')
 			this.selector.style[key] = `rgb(${result[0]},${result[1]},${result[2]})`;
 		else if (key === 'opacity') this.selector.style[key] = result;
-		else if (key === 'scroll') this.selector.scroll(0, result);
+		else if (key === 'scroll') this.selector.scrollTop = result;
 		else this.selector.style[key] = result + 'px';
 	}
 

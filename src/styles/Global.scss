@@ -55,6 +55,7 @@ a {
 	input,
 	textarea {
 		&::placeholder {
+			background-color: transparent;
 			font-size: 1rem;
 			color: rgba(var(--baseColor-code), 0.5);
 		}
@@ -62,5 +63,6 @@ a {
 	select {
 		font-size: 1rem;
 		color: rgba(var(--baseColor-code), 0.5);
+		background-color: transparent;
 	}
 }
