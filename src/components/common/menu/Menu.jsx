@@ -1,8 +1,20 @@
 import './Menu.scss';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 export default function Menu({ IsMenu, setIsMenu }) {
+	useEffect(() => {
+		const removeMenu = () => {
+			window.innerWidth >= 640 && setIsMenu(false);
+		};
+		//해당 컴포넌트는 IsMenu가 false가 JSX가 리턴되진 않지만 컴포넌트 자체는 계속 마운트되어있는 상태이기 때문에
+		//cleanUp함수로 윈도우 객체에 이벤트 핸들러 제거가 불가능하므로 State값에 따라핸들러 제거
+		IsMenu
+			? window.addEventListener('resize', removeMenu)
+			: window.removeEventListener('resize', removeMenu);
+	}, [IsMenu, setIsMenu]);
+
 	return (
 		<AnimatePresence>
 			{IsMenu && (
