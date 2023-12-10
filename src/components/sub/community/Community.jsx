@@ -135,9 +135,6 @@ function Comunity() {
 
 				<div className='showBox'>
 					{Posts.map((post, idx) => {
-						//만약 CurNum이 0일때, CurNum(0) idx>=0 && idx < 3  idx>=(3*0) && idx < (3*1)
-						//만약 CurNum이 1일때, CurNum(1) idx>=3 && idx < 6
-						//만약 CurNum이 2일때, CurNum(2) idx>=6 && idx < 9
 						const stringDate = JSON.stringify(post.date);
 						const textedDate = stringDate.split('T')[0].split('"')[1].split('-').join('.');
 
@@ -172,6 +169,8 @@ function Comunity() {
 									)}
 								</article>
 							);
+						} else {
+							return null;
 						}
 					})}
 				</div>
