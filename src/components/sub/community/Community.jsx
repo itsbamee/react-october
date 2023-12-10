@@ -31,7 +31,11 @@ function Comunity() {
 		const korTime = new Date().getTime() + 1000 * 60 * 60 * 9;
 
 		setPosts([
-			{ title: refInput.current.value, content: refTextarea.current.value, date: new Date(korTime) },
+			{
+				title: refInput.current.value,
+				content: refTextarea.current.value,
+				date: new Date(korTime),
+			},
 			...Posts,
 		]);
 		resetPost();
@@ -87,6 +91,8 @@ function Comunity() {
 	};
 
 	useEffect(() => {
+		//Posts데이터가 변경되면 수정모드를 강제로 false처리해서 로컬저장소에 저장
+		Posts.map((el) => (el.enableUpdate = false));
 		localStorage.setItem('posts', JSON.stringify(Posts));
 	}, [Posts]);
 
@@ -95,7 +101,12 @@ function Comunity() {
 			<div className='wrap'>
 				<div className='inputBox'>
 					<input type='text' placeholder='Write Title' ref={refInput} />
-					<textarea cols='30' rows='5' placeholder='Write Content Message' ref={refTextarea}></textarea>
+					<textarea
+						cols='30'
+						rows='5'
+						placeholder='Write Content Message'
+						ref={refTextarea}
+					></textarea>
 
 					<nav>
 						<button onClick={resetPost}>
