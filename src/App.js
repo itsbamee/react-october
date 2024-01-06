@@ -12,35 +12,38 @@ import './styles/Variable.scss';
 import './styles/Global.scss';
 import { Route, Switch } from 'react-router-dom';
 import MainWrap from './components/main/mainWrap/MainWrap';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Menu from './components/common/menu/Menu';
+import { useDispatch } from 'react-redux';
 
 function App() {
+	const dispatch = useDispatch;
 	const [IsDark, setIsDark] = useState(false);
 	const [IsMenu, setIsMenu] = useState(false);
+	const path = useRef(process.env.PUBLIC_URL);
+
+	const fetchDepartment = async () => {
+		const data = await fetch(`${path.current}/DB/department.json`);
+		const json = await data.json();
+
+		//동기적으로 데이터 반환이 끝나는 순간 배열값만 뽑아서 액션객체로 만든 다음 dispatch 함수로 리듀서에 전달
+		dispatch({ type: 'SET_MEMBERS', payload: json.members });
+	};
+
+	useEffect(() => {
+		fetchDepartment();
+	}, []);
 
 	return (
 		<main className={`wrap ${useMedia()} ${IsDark ? 'dark' : ''}`}>
 			{/* Switch : 중첩된 라우터로 복수개의 동일한 컴포넌트가 연결될 때 처음 연결되는 라우터만 실행되고 나머지는 무시 */}
 			<Switch>
 				<Route exact path='/'>
-					<Header
-						isMain={true}
-						IsDark={IsDark}
-						setIsDark={setIsDark}
-						IsMenu={IsMenu}
-						setIsMenu={setIsMenu}
-					/>
+					<Header isMain={true} IsDark={IsDark} setIsDark={setIsDark} IsMenu={IsMenu} setIsMenu={setIsMenu} />
 					<MainWrap />
 				</Route>
 				<Route path='/'>
-					<Header
-						isMain={false}
-						IsDark={IsDark}
-						setIsDark={setIsDark}
-						IsMenu={IsMenu}
-						setIsMenu={setIsMenu}
-					/>
+					<Header isMain={false} IsDark={IsDark} setIsDark={setIsDark} IsMenu={IsMenu} setIsMenu={setIsMenu} />
 				</Route>
 			</Switch>
 			<Route path='/department' component={Department} />
