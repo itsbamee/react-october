@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+//순서1 - 리듀서 함수가 실행되는 시점에는 전역에 담을 비동기 데이터가 없으므로 빈배열로 전역 state초기화
 const memberReducer = (state = { members: [] }, action) => {
 	switch (action.type) {
 		case 'SET_MEMBERS':
