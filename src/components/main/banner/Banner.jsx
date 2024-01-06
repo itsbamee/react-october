@@ -3,7 +3,6 @@ import './Banner.scss';
 import { useRef, useEffect, useCallback, useState } from 'react';
 
 export default function Banner() {
-	console.log('Banner');
 	const [Frame, setFrame] = useState(null);
 
 	const currentEl = useRef(null);
